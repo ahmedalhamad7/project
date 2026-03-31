@@ -8,7 +8,9 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    db = get_db()
+    sites = db.execute('SELECT * FROM sites').fetchall()
+    return render_template('index.html', sites=[dict(s) for s in sites])
 
 
 @app.route('/api/incidents', methods=['GET'])
@@ -27,14 +29,14 @@ def create_incident():
     description = data.get('description')
     severity = data.get('severity')
     status = data.get('status', 'open')
-    created_at = datetime.now(datetime.timezone.utc)
+    created_at = datetime.now()
     resolved_at = None
 
     db = get_db()
     cursor = db.cursor()
     cursor.execute(
-        'INSERT INTO incidents (title, description, severity, status, created_at, resolved_at) VALUES (?, ?, ?, ?, ?, ?)',
-        (title, description, severity, status, created_at, resolved_at)
+        'INSERT INTO incidents (title, description, severity, status, site_id, created_at) VALUES (?, ?, ?, ?, ?, datetime("now"))',
+        (data['title'], data['description'], data['severity'], data['status'], data['site_id'])
     )
     db.commit()
     return jsonify({'id': cursor.lastrowid, 'title': title, 'description': description, 'severity': severity, 'status': status, 'created_at': created_at, 'resolved_at': resolved_at}), 201

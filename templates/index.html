@@ -76,7 +76,7 @@
     <h1>Incident Management</h1>
 
     <h2>Create New Incident</h2>
-    <form action="/incidents" method="POST">
+    <form id="incident-form" onsubmit="event.preventDefault(); createIncident();">
         <label for="title">Title</label>
         <input type="text" id="title" name="title" required>
 
@@ -124,19 +124,19 @@
                 <th>Created At</th>
             </tr>
         </thead>
-        <tbody>
-            {% for incident in incidents %}
+        <tbody id="incidents-body">
             <tr>
-                <td>{{ incident.id }}</td>
-                <td>{{ incident.title }}</td>
-                <td>{{ incident.description }}</td>
-                <td class="severity-{{ incident.severity }}">{{ incident.severity }}</td>
-                <td class="status-{{ incident.status }}">{{ incident.status }}</td>
-                <td>{{ incident.site_name }}</td>
-                <td>{{ incident.created_at }}</td>
+                <td>ID</td>
+                <td>Title</td>
+                <td>Description</td>
+                <td class="severity-low">Low</td>
+                <td class="status-open">Open</td>
+                <td>Site Name</td>
+                <td>Created At</td>
             </tr>
-            {% endfor %}
         </tbody>
     </table>
+
+    <script src="/static/index.js"></script>
 </body>
 </html>
