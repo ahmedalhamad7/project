@@ -1,4 +1,4 @@
-# This Project is a Test for Infiniteware 
+# This Project is a Test
 
 
 ## the project establishes a solid ground for Network Incident Tracking 
